@@ -143,7 +143,12 @@
         <div class="phone-wrap">
           <div class="phone-prefix">
             <select id="dial-code">
-              <option value="+61">🇦🇺 +61</option
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+64">🇳🇿 +64</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+852">🇭🇰 +852</option>
             </select>
           </div>
           <input class="phone-input" id="ph" type="tel" placeholder="04xx xxx xxx"/>
@@ -191,14 +196,14 @@
 <div class="success" id="success">
   <div class="success-icon">✅</div>
   <h2>You're all set!</h2>
-  <p>Your claim has been logged. We'll pack up your merch and get it on its way.</p>
-  <div class="success-note">📬 Keep an eye on your inbox for a shipping confirmation.</div>
+  <p>Your claim has been logged successfully.</p>
 </div>
 </div>
 <footer>Podium · Merch Claim · Internal Use Only</footer>
 
 <script>
-const SHEETDB_URL = 'https://sheetdb.io/api/v1/4vbemvuwo20aj';
+// UPDATED WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL
+const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/podium.com/s/AKfycbzk6qBcH6OS-WfUy8Thbe3uBJ1-H27s-ELDhAOHAjb6lE48uJFphH3XvAZkmdqlma0/exec';
 
 const AU_CITIES = [
   {city:'Sydney',state:'NSW',postcode:'2000'},{city:'Melbourne',state:'VIC',postcode:'3000'},
@@ -259,29 +264,29 @@ async function submitForm() {
 
   const payload = {
     'Timestamp': ts,
-    'FirstName': fn,
-    'LastName': ln,
-    'Email': em,
+    'First  Name ': fn,
+    'Last Name': ln,
+    'Email ': em,
     'Phone': "'" + phone,
-    'Company': v('co'),
-    'Street': st,
+    'Company ': v('co'),
+    'Street Address': st,
     'City': ci,
     'State': v('sa'),
     'Postcode': v('pc'),
     'Country': 'Australia',
-    'Item(s)': Array.from(sel).join(', '),
+    'Item(s) ': Array.from(sel).join(', '),
     'Status': 'Pending'
   };
 
   try {
-    const res = await fetch(SHEETDB_URL, {
+    const res = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-      body: JSON.stringify({ data: [payload] })
+      mode: 'no-cors', // Apps Script requires no-cors for simple POST
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
     });
-    const json = await res.json();
-    if (!res.ok) throw new Error(JSON.stringify(json));
-
+    
+    // With no-cors, we can't check res.ok, but if it doesn't throw, it likely worked.
     document.getElementById('main-form').style.display = 'none';
     document.getElementById('success').classList.add('vis');
     window.scrollTo({top:0,behavior:'smooth'});
