@@ -143,12 +143,7 @@
         <div class="phone-wrap">
           <div class="phone-prefix">
             <select id="dial-code">
-              <option value="+61">🇦🇺 +61</option>
-              <option value="+64">🇳🇿 +64</option>
-              <option value="+1">🇺🇸 +1</option>
-              <option value="+44">🇬🇧 +44</option>
-              <option value="+65">🇸🇬 +65</option>
-              <option value="+852">🇭🇰 +852</option>
+              <option value="+61">🇦🇺 +61</option
             </select>
           </div>
           <input class="phone-input" id="ph" type="tel" placeholder="04xx xxx xxx"/>
@@ -264,8 +259,8 @@ async function submitForm() {
 
   const payload = {
     'Timestamp': ts,
-    'First Name': fn,
-    'Last Name': ln,
+    'FirstName': fn,
+    'LastName': ln,
     'Email': em,
     'Phone': "'" + phone,
     'Company': v('co'),
