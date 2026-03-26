@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Claim Your Podium Merch</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{
@@ -13,26 +12,21 @@
   }
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Merriweather:wght@700&display=swap');
   body{font-family:'Roboto',sans-serif;background:var(--eggshell);color:var(--stinkbug);min-height:100vh;}
-
   .header{background:var(--stinkbug);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;}
   .logo{display:flex;align-items:center;gap:10px;}
   .logo-mark{width:32px;height:32px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;}
   .logo-mark svg{fill:white;width:18px;height:18px;}
   .logo-type{font-size:20px;font-weight:700;color:var(--eggshell);letter-spacing:-0.5px;}
   .header-tag{font-size:11px;font-weight:500;color:rgba(247,245,240,.45);text-transform:uppercase;letter-spacing:1px;}
-
   .hero{background:var(--stinkbug);color:var(--eggshell);padding:72px 24px 80px;text-align:center;position:relative;overflow:hidden;}
   .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(37,99,235,0.35) 0%,transparent 70%);pointer-events:none;}
   .hero-eyebrow{display:inline-block;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);padding:6px 14px;border-radius:100px;margin-bottom:20px;}
   .hero h1{font-size:clamp(28px,5vw,48px);font-weight:700;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
   .hero h1 em{font-family:'Merriweather',serif;font-style:italic;font-weight:700;color:var(--blue);}
   .hero p{font-size:17px;color:rgba(247,245,240,0.7);max-width:500px;margin:0 auto;line-height:1.65;}
-
   .container{max-width:740px;margin:0 auto;padding:48px 20px 80px;}
-
   .step-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--mid);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
   .step-badge{width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;}
-
   .merch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px;margin-bottom:40px;}
   .merch-card{background:#fff;border:2px solid var(--border);border-radius:var(--radius);padding:24px 16px 20px;cursor:pointer;transition:border-color .18s,box-shadow .18s,transform .12s;text-align:center;position:relative;user-select:none;}
   .merch-card:hover{border-color:#93B4F8;box-shadow:0 4px 20px rgba(37,99,235,0.1);transform:translateY(-2px);}
@@ -42,60 +36,39 @@
   .merch-icon{font-size:42px;margin-bottom:12px;}
   .merch-name{font-size:14px;font-weight:500;color:var(--stinkbug);margin-bottom:4px;}
   .merch-desc{font-size:12px;color:var(--mid);}
-
   .form-card{background:#fff;border-radius:20px;padding:32px;box-shadow:0 2px 20px rgba(15,25,40,0.06);margin-bottom:16px;}
-  .form-card h2{font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-0.3px;}
   .form-card .sub{font-size:13px;color:var(--mid);margin-bottom:24px;}
   .divider{height:1px;background:var(--border);margin:22px 0;}
-
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
   .grid-1{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:14px;}
-  @media(max-width:540px){.grid-2,.grid-3{grid-template-columns:1fr;}}
-
+  @media(max-width:540px){.grid-2{grid-template-columns:1fr;}}
   .field{display:flex;flex-direction:column;gap:5px;}
   .field label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;color:var(--mid);}
-
-  /* phone input with flag prefix */
-  .phone-wrap{display:flex;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .15s,box-shadow .15s;background:#fff;}
-  .phone-wrap:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.12);}
-  .phone-prefix{display:flex;align-items:center;gap:6px;padding:11px 12px;background:#F9FAFB;border-right:1.5px solid var(--border);font-size:13px;color:var(--stinkbug);white-space:nowrap;font-weight:500;}
-  .phone-prefix select{border:none;background:transparent;font-size:13px;color:var(--stinkbug);font-family:'Roboto',sans-serif;font-weight:500;cursor:pointer;outline:none;padding:0;}
-  .phone-input{flex:1;padding:11px 14px;border:none;font-size:14px;color:var(--stinkbug);outline:none;font-family:'Roboto',sans-serif;background:transparent;}
-  .phone-input::placeholder{color:#C2C8D0;}
-
   .field input,.field select{padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;color:var(--stinkbug);background:#fff;transition:border-color .15s,box-shadow .15s;outline:none;font-family:'Roboto',sans-serif;}
   .field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.12);}
   .field input::placeholder{color:#C2C8D0;}
-
-  .addr-box{background:var(--blue-light);border:1px solid #BFCFF9;border-radius:12px;padding:18px 20px;margin-bottom:16px;}
-  .addr-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;color:var(--mid);margin-bottom:8px;}
-  .addr-text{font-size:14px;color:var(--stinkbug);line-height:1.65;margin-bottom:16px;white-space:pre-line;}
-  .radio-group{display:flex;flex-direction:column;gap:8px;}
-  .radio-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;background:#fff;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:13px;font-weight:500;transition:border-color .15s,background .15s;}
-  .radio-opt:hover{border-color:var(--blue);}
-  .radio-opt.sel{border-color:var(--blue);background:var(--blue-light);}
-  .radio-opt input[type=radio]{accent-color:var(--blue);width:15px;height:15px;}
-  #address-fields{display:none;margin-top:14px;}
-  #address-fields.vis{display:block;}
-
-  .submit-btn{width:100%;padding:16px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:500;letter-spacing:.2px;cursor:pointer;transition:background .18s,transform .12s,box-shadow .18s;margin-top:8px;font-family:'Roboto',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .field input[readonly]{background:#F9FAFB;color:var(--mid);}
+  .phone-wrap{display:flex;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .15s,box-shadow .15s;background:#fff;}
+  .phone-wrap:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.12);}
+  .phone-prefix{display:flex;align-items:center;padding:11px 12px;background:#F9FAFB;border-right:1.5px solid var(--border);}
+  .phone-prefix select{border:none;background:transparent;font-size:13px;color:var(--stinkbug);font-family:'Roboto',sans-serif;font-weight:500;cursor:pointer;outline:none;padding:0;}
+  .phone-input{flex:1;padding:11px 14px;border:none;font-size:14px;color:var(--stinkbug);outline:none;font-family:'Roboto',sans-serif;background:transparent;}
+  .phone-input::placeholder{color:#C2C8D0;}
+  .submit-btn{width:100%;padding:16px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;transition:background .18s,transform .12s,box-shadow .18s;margin-top:8px;font-family:'Roboto',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;}
   .submit-btn:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,0.3);}
-  .submit-btn:active{transform:translateY(0);}
   .submit-btn:disabled{background:#B0B8C4;cursor:not-allowed;transform:none;box-shadow:none;}
   .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
   @keyframes spin{to{transform:rotate(360deg)}}
-
-  .err{display:none;background:#FFF0F0;border:1px solid #FFC0C0;border-radius:10px;padding:12px 16px;font-size:13px;color:#B91C1C;margin-top:12px;}
-  .err.vis{display:block;}
-
+  .msg{display:none;border-radius:10px;padding:12px 16px;font-size:13px;margin-top:12px;}
+  .msg.err{background:#FFF0F0;border:1px solid #FFC0C0;color:#B91C1C;}
+  .msg.info{background:#EEF3FE;border:1px solid #BFCFF9;color:#2563EB;}
+  .msg.vis{display:block;}
   .success{display:none;text-align:center;padding:80px 20px;}
   .success.vis{display:block;}
   .success-icon{font-size:64px;margin-bottom:20px;}
   .success h2{font-size:28px;font-weight:700;margin-bottom:10px;letter-spacing:-0.5px;}
   .success p{font-size:16px;color:var(--mid);max-width:400px;margin:0 auto;line-height:1.65;}
   .success-note{margin-top:24px;display:inline-block;background:var(--blue-light);border:1px solid #BFCFF9;border-radius:10px;padding:12px 20px;font-size:13px;color:var(--blue);}
-
   footer{text-align:center;padding:24px;font-size:12px;color:#B0B8C4;}
 </style>
 </head>
@@ -161,10 +134,7 @@
       <div class="field"><label>Last Name</label><input id="ln" type="text" placeholder="Smith"/></div>
     </div>
     <div class="grid-2">
-      <div class="field">
-        <label>Email</label>
-        <input id="em" type="email" placeholder="jane@company.com"/>
-      </div>
+      <div class="field"><label>Email</label><input id="em" type="email" placeholder="jane@company.com"/></div>
       <div class="field"><label>Company</label><input id="co" type="text" placeholder="Acme Corp"/></div>
     </div>
     <div class="grid-2">
@@ -172,15 +142,13 @@
         <label>Phone</label>
         <div class="phone-wrap">
           <div class="phone-prefix">
-            <select id="dial-code" onchange="updateFlag()">
-              <option value="+61" data-flag="🇦🇺">🇦🇺 +61</option>
-              <option value="+64" data-flag="🇳🇿">🇳🇿 +64</option>
-              <option value="+1" data-flag="🇺🇸">🇺🇸 +1</option>
-              <option value="+44" data-flag="🇬🇧">🇬🇧 +44</option>
-              <option value="+65" data-flag="🇸🇬">🇸🇬 +65</option>
-              <option value="+852" data-flag="🇭🇰">🇭🇰 +852</option>
-              <option value="+49" data-flag="🇩🇪">🇩🇪 +49</option>
-              <option value="+33" data-flag="🇫🇷">🇫🇷 +33</option>
+            <select id="dial-code">
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+64">🇳🇿 +64</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+852">🇭🇰 +852</option>
             </select>
           </div>
           <input class="phone-input" id="ph" type="tel" placeholder="04xx xxx xxx"/>
@@ -190,65 +158,39 @@
     </div>
 
     <div class="divider"></div>
-    <div class="step-label" style="margin-bottom:14px"><div class="step-badge">3</div> Confirm shipping address</div>
+    <div class="step-label" style="margin-bottom:14px"><div class="step-badge">3</div> Shipping address</div>
 
-    <!-- URL-param address block -->
-    <div class="addr-box" id="addr-confirm" style="display:none">
-      <div class="addr-label">Is this the right address?</div>
-      <div class="addr-text" id="addr-display">—</div>
-      <div class="radio-group">
-        <label class="radio-opt" id="opt-yes" onclick="chooseAddr('yes')">
-          <input type="radio" name="addr" value="yes"/> Yes, ship here
-        </label>
-        <label class="radio-opt" id="opt-update" onclick="chooseAddr('update')">
-          <input type="radio" name="addr" value="update"/> No, I need to update it
-        </label>
+    <div class="grid-1">
+      <div class="field"><label>Street Address</label><input id="st" type="text" placeholder="123 King St"/></div>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label>City</label>
+        <select id="ci" onchange="onCityChange()"><option value="">Select city…</option></select>
       </div>
-      <div id="address-fields">
-        <div style="height:14px"></div>
-        <div class="grid-1"><div class="field"><label>Street Address</label><input id="st" type="text" placeholder="123 King St"/></div></div>
-        <div class="grid-2">
-          <div class="field"><label>City</label>
-            <select id="ci" onchange="onCityChange('ci','sa','pc')"><option value="">Select city…</option></select>
-          </div>
-          <div class="field"><label>State</label>
-            <select id="sa"><option value="">Select state…</option><option>ACT</option><option>NSW</option><option>NT</option><option>QLD</option><option>SA</option><option>TAS</option><option>VIC</option><option>WA</option></select>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="field"><label>Postcode</label><input id="pc" type="text" placeholder="2000"/></div>
-          <div class="field"><label>Country</label><input id="cy" type="text" value="Australia" readonly style="background:#F9FAFB;color:var(--mid)"/></div>
-        </div>
+      <div class="field">
+        <label>State</label>
+        <select id="sa">
+          <option value="">Select state…</option>
+          <option>ACT</option><option>NSW</option><option>NT</option>
+          <option>QLD</option><option>SA</option><option>TAS</option>
+          <option>VIC</option><option>WA</option>
+        </select>
       </div>
     </div>
-
-    <!-- Manual address block -->
-    <div id="addr-manual" style="display:none">
-      <div class="grid-1"><div class="field"><label>Street Address</label><input id="st2" type="text" placeholder="123 King St"/></div></div>
-      <div class="grid-2">
-        <div class="field"><label>City</label>
-          <select id="ci2" onchange="onCityChange('ci2','sa2','pc2')"><option value="">Select city…</option></select>
-        </div>
-                  <div class="field"><label>State</label>
-            <select id="sa2"><option value="">Select state…</option><option>ACT</option><option>NSW</option><option>NT</option><option>QLD</option><option>SA</option><option>TAS</option><option>VIC</option><option>WA</option></select>
-          </div>
-      </div>
-      <div class="grid-2">
-        <div class="field"><label>Postcode</label><input id="pc2" type="text" placeholder="2000"/></div>
-        <div class="field"><label>Country</label><input id="cy2" type="text" value="Australia" readonly style="background:#F9FAFB;color:var(--mid)"/></div>
-      </div>
+    <div class="grid-2">
+      <div class="field"><label>Postcode</label><input id="pc" type="text" placeholder="2000"/></div>
+      <div class="field"><label>Country</label><input id="cy" type="text" value="Australia" readonly/></div>
     </div>
-
   </div>
 
-  <div class="err" id="err">Please select at least one item and fill in all required fields.</div>
-  <div class="err" id="sheet-err"></div>
+  <div class="msg err" id="err">Please select at least one item and fill in all required fields.</div>
+  <div class="msg info" id="info"></div>
 
   <button class="submit-btn" id="submit-btn" onclick="submitForm()">
     <span id="btn-text">🎁 Claim My Merch</span>
     <div class="spinner" id="spinner"></div>
   </button>
-
 </div>
 
 <div class="success" id="success">
@@ -257,187 +199,105 @@
   <p>Your claim has been logged. We'll pack up your merch and get it on its way.</p>
   <div class="success-note">📬 Keep an eye on your inbox for a shipping confirmation.</div>
 </div>
-
 </div>
 <footer>Podium · Merch Claim · Internal Use Only</footer>
 
 <script>
 const SHEETDB_URL = 'https://sheetdb.io/api/v1/4vbemvuwo20aj';
 
-// Australian cities with state + sample postcode
 const AU_CITIES = [
-  {city:'Sydney',        state:'NSW', postcode:'2000'},
-  {city:'Melbourne',     state:'VIC', postcode:'3000'},
-  {city:'Brisbane',      state:'QLD', postcode:'4000'},
-  {city:'Perth',         state:'WA',  postcode:'6000'},
-  {city:'Adelaide',      state:'SA',  postcode:'5000'},
-  {city:'Gold Coast',    state:'QLD', postcode:'4217'},
-  {city:'Canberra',      state:'ACT', postcode:'2600'},
-  {city:'Newcastle',     state:'NSW', postcode:'2300'},
-  {city:'Wollongong',    state:'NSW', postcode:'2500'},
-  {city:'Hobart',        state:'TAS', postcode:'7000'},
-  {city:'Geelong',       state:'VIC', postcode:'3220'},
-  {city:'Townsville',    state:'QLD', postcode:'4810'},
-  {city:'Cairns',        state:'QLD', postcode:'4870'},
-  {city:'Darwin',        state:'NT',  postcode:'0800'},
-  {city:'Toowoomba',     state:'QLD', postcode:'4350'},
-  {city:'Ballarat',      state:'VIC', postcode:'3350'},
-  {city:'Bendigo',       state:'VIC', postcode:'3550'},
-  {city:'Launceston',    state:'TAS', postcode:'7250'},
-  {city:'Sunshine Coast',state:'QLD', postcode:'4557'},
-  {city:'Albury',        state:'NSW', postcode:'2640'},
+  {city:'Sydney',state:'NSW',postcode:'2000'},{city:'Melbourne',state:'VIC',postcode:'3000'},
+  {city:'Brisbane',state:'QLD',postcode:'4000'},{city:'Perth',state:'WA',postcode:'6000'},
+  {city:'Adelaide',state:'SA',postcode:'5000'},{city:'Gold Coast',state:'QLD',postcode:'4217'},
+  {city:'Canberra',state:'ACT',postcode:'2600'},{city:'Newcastle',state:'NSW',postcode:'2300'},
+  {city:'Wollongong',state:'NSW',postcode:'2500'},{city:'Hobart',state:'TAS',postcode:'7000'},
+  {city:'Geelong',state:'VIC',postcode:'3220'},{city:'Townsville',state:'QLD',postcode:'4810'},
+  {city:'Cairns',state:'QLD',postcode:'4870'},{city:'Darwin',state:'NT',postcode:'0800'},
+  {city:'Toowoomba',state:'QLD',postcode:'4350'},{city:'Ballarat',state:'VIC',postcode:'3350'},
+  {city:'Bendigo',state:'VIC',postcode:'3550'},{city:'Launceston',state:'TAS',postcode:'7250'},
+  {city:'Sunshine Coast',state:'QLD',postcode:'4557'},{city:'Albury',state:'NSW',postcode:'2640'},
 ];
 
-// Populate city dropdowns
-function populateCityDropdowns() {
-  ['ci','ci2'].forEach(id => {
-    const sel = document.getElementById(id);
-    if (!sel) return;
-    AU_CITIES.forEach(({city}) => {
-      const o = document.createElement('option');
-      o.value = city; o.textContent = city;
-      sel.appendChild(o);
-    });
-  });
-}
+// Populate city dropdown
+const ciEl = document.getElementById('ci');
+AU_CITIES.forEach(({city}) => {
+  const o = document.createElement('option');
+  o.value = city; o.textContent = city;
+  ciEl.appendChild(o);
+});
 
-function onCityChange(cityId, stateId, postcodeId) {
-  const city = document.getElementById(cityId).value;
-  const match = AU_CITIES.find(c => c.city === city);
+function onCityChange() {
+  const match = AU_CITIES.find(c => c.city === document.getElementById('ci').value);
   if (match) {
-    const stateEl = document.getElementById(stateId);
-    stateEl.value = match.state;
-    // if it's a select and the option isn't found, add it
-    if (stateEl.tagName === 'SELECT' && !stateEl.value) stateEl.value = '';
-    document.getElementById(postcodeId).value = match.postcode;
+    document.getElementById('sa').value = match.state;
+    document.getElementById('pc').value = match.postcode;
   }
 }
 
-// Merch selection
 const sel = new Set();
 function toggle(card) {
   const it = card.dataset.item;
   sel.has(it) ? (sel.delete(it), card.classList.remove('selected'))
-               : (sel.add(it),   card.classList.add('selected'));
+               : (sel.add(it), card.classList.add('selected'));
 }
 
-// Phone flag update (already shown in select text)
-function updateFlag() {}
-
-// URL params
-const p = new URLSearchParams(location.search);
-const g = k => (p.get(k)||'').trim();
-const pf = {fn:g('firstname'),ln:g('lastname'),em:g('email'),co:g('company'),ph:g('phone'),
-            st:g('address'),ci:g('city'),sa:g('state'),pc:g('postcode'),cy:g('country')};
-const hasAddr = pf.st || pf.ci;
-
-if(pf.fn) document.getElementById('fn').value = pf.fn;
-if(pf.ln) document.getElementById('ln').value = pf.ln;
-if(pf.em) document.getElementById('em').value = pf.em;
-if(pf.co) document.getElementById('co').value = pf.co;
-if(pf.ph) document.getElementById('ph').value = pf.ph;
-
-let addrChoice = 'manual';
-
-populateCityDropdowns();
-
-if (hasAddr) {
-  const lines = [pf.st,[pf.ci,pf.sa,pf.pc].filter(Boolean).join(' '),pf.cy||'Australia'].filter(Boolean);
-  document.getElementById('addr-display').textContent = lines.join('\n');
-  if(pf.st) document.getElementById('st').value  = pf.st;
-  if(pf.ci){ document.getElementById('ci').value = pf.ci; onCityChange('ci','sa','pc'); }
-  if(pf.pc) document.getElementById('pc').value  = pf.pc;
-  document.getElementById('addr-confirm').style.display = 'block';
-  chooseAddr('yes');
-} else {
-  document.getElementById('addr-manual').style.display = 'block';
-}
-
-function chooseAddr(v) {
-  addrChoice = v;
-  document.getElementById('opt-yes').classList.toggle('sel', v==='yes');
-  document.getElementById('opt-update').classList.toggle('sel', v==='update');
-  document.getElementById('address-fields').classList.toggle('vis', v==='update');
-}
-
-function getAddr() {
-  if (hasAddr) {
-    if (addrChoice === 'yes') return {st:pf.st, ci:pf.ci, sa:pf.sa, pc:pf.pc, cy:pf.cy||'Australia'};
-    return {st:v('st'), ci:v('ci'), sa:v('sa'), pc:v('pc'), cy:'Australia'};
-  }
-  return {st:v('st2'), ci:v('ci2'), sa:v('sa2'), pc:v('pc2'), cy:'Australia'};
-}
-
-function v(id){ return document.getElementById(id)?.value.trim()||''; }
-
-function getPhone() {
-  const code = document.getElementById('dial-code').value;
-  const num  = v('ph');
-  return num ? code + ' ' + num : '';
-}
+function v(id) { return (document.getElementById(id)?.value || '').trim(); }
 
 async function submitForm() {
   document.getElementById('err').classList.remove('vis');
-  document.getElementById('sheet-err').style.display = 'none';
+  document.getElementById('info').classList.remove('vis');
 
-  const fn=v('fn'), ln=v('ln'), em=v('em');
-  const addr = getAddr();
-
-  if (!fn || !ln || !em || !addr.st || !addr.ci || sel.size === 0) {
-    const el = document.getElementById('err');
-    el.textContent = 'Please select at least one item and fill in all required fields.';
-    el.classList.add('vis');
-    el.scrollIntoView({behavior:'smooth',block:'nearest'});
+  const fn=v('fn'), ln=v('ln'), em=v('em'), st=v('st'), ci=v('ci');
+  if (!fn || !ln || !em || !st || !ci || sel.size === 0) {
+    document.getElementById('err').classList.add('vis');
+    document.getElementById('err').scrollIntoView({behavior:'smooth',block:'nearest'});
     return;
   }
 
-  const btn=document.getElementById('submit-btn');
-  btn.disabled=true;
-  document.getElementById('spinner').style.display='block';
-  document.getElementById('btn-text').textContent='Submitting…';
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  document.getElementById('spinner').style.display = 'block';
+  document.getElementById('btn-text').textContent = 'Submitting…';
 
-  const now = new Date();
-  const ts = now.toLocaleString('en-AU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const ts = new Date().toLocaleString('en-AU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const phone = v('ph') ? document.getElementById('dial-code').value + ' ' + v('ph') : '';
 
   const payload = {
-    timestamp:ts, firstName:fn, lastName:ln, email:em, company:v('co'),
-    phone:getPhone(),
-    street:addr.st, city:addr.ci, state:addr.sa, postcode:addr.pc, country:addr.cy,
-    items:Array.from(sel).join(', '), status:'Pending'
+    'Timestamp': ts,
+    'First Name': fn,
+    'Last Name': ln,
+    'Email': em,
+    'Company': v('co'),
+    'Phone': phone,
+    'Street': st,
+    'City': ci,
+    'State': v('sa'),
+    'Postcode': v('pc'),
+    'Country': 'Australia',
+    'Item(s)': Array.from(sel).join(', '),
+    'Status': 'Pending'
   };
 
   try {
-  try {
     const res = await fetch(SHEETDB_URL, {
-      method: 'GET',
-      mode: 'cors'
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({ data: [payload] })
     });
     const json = await res.json();
-    if (json.result !== 'success') throw new Error(json.message);
-  } catch(e) {
-    console.error('Sheet error:', e);
-    const se = document.getElementById('sheet-err');
-    se.textContent = '⚠️ Could not reach the sheet: ' + e.message;
-    se.style.display = 'block';
-  }
-  } catch(e) {
-    const se = document.getElementById('sheet-err');
-    se.textContent = '⚠️ Could not reach the sheet — entry saved locally via download.';
-    se.style.display = 'block';
-  }
+    if (!res.ok) throw new Error(JSON.stringify(json));
 
-  // Excel backup
-  const wb = XLSX.utils.book_new();
-  const headers = ['Timestamp','First Name','Last Name','Email','Company','Phone','Street','City','State','Postcode','Country','Item(s)','Status'];
-  const row = [ts,fn,ln,em,v('co'),payload.phone,addr.st,addr.ci,addr.sa,addr.pc,addr.cy,payload.items,'Pending'];
-  const ws = XLSX.utils.aoa_to_sheet([headers,row]);
-  ws['!cols']=[{wch:18},{wch:14},{wch:14},{wch:26},{wch:20},{wch:16},{wch:24},{wch:14},{wch:10},{wch:10},{wch:14},{wch:30},{wch:12}];
-  XLSX.utils.book_append_sheet(wb,ws,'Fulfillment');
-  XLSX.writeFile(wb,'merch-fulfillment.xlsx');
-
-  document.getElementById('main-form').style.display='none';
-  document.getElementById('success').classList.add('vis');
-  window.scrollTo({top:0,behavior:'smooth'});
+    document.getElementById('main-form').style.display = 'none';
+    document.getElementById('success').classList.add('vis');
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(e) {
+    btn.disabled = false;
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('btn-text').textContent = '🎁 Claim My Merch';
+    const info = document.getElementById('info');
+    info.textContent = '⚠️ Submission failed: ' + e.message;
+    info.classList.add('vis');
+  }
 }
 </script>
 </body>
