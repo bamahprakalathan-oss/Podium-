@@ -144,11 +144,6 @@
           <div class="phone-prefix">
             <select id="dial-code">
               <option value="+61">🇦🇺 +61</option>
-              <option value="+64">🇳🇿 +64</option>
-              <option value="+1">🇺🇸 +1</option>
-              <option value="+44">🇬🇧 +44</option>
-              <option value="+65">🇸🇬 +65</option>
-              <option value="+852">🇭🇰 +852</option>
             </select>
           </div>
           <input class="phone-input" id="ph" type="tel" placeholder="04xx xxx xxx"/>
@@ -202,9 +197,6 @@
 <footer>Podium · Merch Claim · Internal Use Only</footer>
 
 <script>
-// UPDATED WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL
-const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/podium.com/s/AKfycbzk6qBcH6OS-WfUy8Thbe3uBJ1-H27s-ELDhAOHAjb6lE48uJFphH3XvAZkmdqlma0/exec';
-
 const AU_CITIES = [
   {city:'Sydney',state:'NSW',postcode:'2000'},{city:'Melbourne',state:'VIC',postcode:'3000'},
   {city:'Brisbane',state:'QLD',postcode:'4000'},{city:'Perth',state:'WA',postcode:'6000'},
@@ -243,7 +235,7 @@ function toggle(card) {
 
 function v(id) { return (document.getElementById(id)?.value || '').trim(); }
 
-async function submitForm() {
+function submitForm() {
   document.getElementById('err').classList.remove('vis');
   document.getElementById('info').classList.remove('vis');
 
@@ -267,8 +259,8 @@ async function submitForm() {
     'First  Name ': fn,
     'Last Name': ln,
     'Email ': em,
-    'Phone': "'" + phone,
     'Company ': v('co'),
+    'Phone': "'" + phone,
     'Street Address': st,
     'City': ci,
     'State': v('sa'),
@@ -278,26 +270,22 @@ async function submitForm() {
     'Status': 'Pending'
   };
 
-  try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors', // Apps Script requires no-cors for simple POST
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
-    });
-    
-    // With no-cors, we can't check res.ok, but if it doesn't throw, it likely worked.
-    document.getElementById('main-form').style.display = 'none';
-    document.getElementById('success').classList.add('vis');
-    window.scrollTo({top:0,behavior:'smooth'});
-  } catch(e) {
-    btn.disabled = false;
-    document.getElementById('spinner').style.display = 'none';
-    document.getElementById('btn-text').textContent = '🎁 Claim My Merch';
-    const info = document.getElementById('info');
-    info.textContent = '⚠️ Submission failed: ' + e.message;
-    info.classList.add('vis');
-  }
+  // Directly call the Apps Script server-side function
+  google.script.run
+    .withSuccessHandler(() => {
+      document.getElementById('main-form').style.display = 'none';
+      document.getElementById('success').classList.add('vis');
+      window.scrollTo({top:0,behavior:'smooth'});
+    })
+    .withFailureHandler((err) => {
+      btn.disabled = false;
+      document.getElementById('spinner').style.display = 'none';
+      document.getElementById('btn-text').textContent = '🎁 Claim My Merch';
+      const info = document.getElementById('info');
+      info.textContent = '⚠️ Submission failed: ' + err.message;
+      info.classList.add('vis');
+    })
+    .saveToSheet(payload);
 }
 </script>
 </body>
